@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>votes</display-name>
+  <filter>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>com.zd.filtier.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <servlet>
+  	<servlet-name>userServlet</servlet-name>
+  	<servlet-class>com.zd.servlet.UserServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>userServlet</servlet-name>
+  	<url-pattern>/user.action</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>itemServlet</servlet-name>
+  	<servlet-class>com.zd.servlet.ItemServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>itemServlet</servlet-name>
+  	<url-pattern>/item.action</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>subjectServlet</servlet-name>
+  	<servlet-class>com.zd.servlet.SubjectServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>subjectServlet</servlet-name>
+  	<url-pattern>/subject.action</url-pattern>
+  </servlet-mapping>
+  
+</web-app>

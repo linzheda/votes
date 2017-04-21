@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zd.mapper.SubjectMapper">
+	<cache type="com.zd.dao.redis.cache.RedisCache"></cache>
+	<select id="selectSubjectAll" resultMap="SubjectMap">
+		select subject.id,title,type,version,subject.userid,count(item.id) as count from subject 
+		left join item
+		on subject.id=item.subjectid
+		group by subject.id,title,type,version,subject.userid
+	</select>
+	<select id="selectSubjectOne" resultMap="SubjectMap"  parameterType="String">
+		select subject.id,title,type,version,subject.userid,count(item.id) as count from subject 
+		left join item
+		on subject.id=item.subjectid
+		group by subject.id,title,type,version,subject.userid
+		<if test="_parameter!=null and _parameter!='' ">
+				having subject.id=#{_parameter}
+		</if>
+	</select>
+	<select id="selectSubjectByName" resultMap="SubjectMap"  parameterType="String">
+		select subject.id,title,type,version,subject.userid,count(item.id) as count from subject 
+		left join item
+		on subject.id=item.subjectid
+		group by subject.id,title,type,version,subject.userid
+		<if test="_parameter!=null and _parameter!='' ">
+				having subject.title like #{_parameter}
+		</if>
+	</select>
+	<select id="selectOptionsBySubjectId" resultType="Options">
+		select * from options 
+		where subjectid = #{id}
+	</select>
+	<resultMap type="Subject" id="SubjectMap">
+		<id property="id" column="id" />
+		<result property="title" column="title" />
+		<result property="type" column="type" />
+		<result property="version" column="version" />
+		<result property="userid" column="userid" />
+		<result property="usercount" column="count"/>
+		<collection  property="options" column="id" ofType="Options" select="selectOptionsBySubjectId">
+			<id property="id" column="id" />
+			<result property="name" column="name" />
+			<result property="orders" column="orders" />
+			<result property="subjectid" column="subjectid" />
+		</collection >
+	</resultMap>
+	<insert id="addSubject" parameterType="Subject" useGeneratedKeys="true" keyProperty="id">
+		insert into subject(title,type,userid,version) values(#{title},#{type},#{userid},1)
+	</insert>
+	
+	
+</mapper>

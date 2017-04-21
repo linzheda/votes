@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zd.mapper.UserMapper">
+	<insert id="registerUser" parameterType="User">
+		insert into user(userid,username,password,version,status) values(#{userId},#{userName},#{password},#{version},#{status})
+	</insert>
+	<select id="loginUser" parameterType="User" resultMap="UserMap">
+		select userid,username from user 
+		<where>
+			<if test="userId!=null">
+				userid =#{userId}
+			</if>
+			<if test="password!=null">
+				and password=#{password}
+			</if>
+			<if test="userName!=null">
+				and username=#{userName}
+			</if>
+		</where>
+	</select>
+	<resultMap type="User" id="UserMap">
+		<id property="userId" column="userid" />
+		<result property="userName" column="userName" />
+		<result property="password" column="password" />
+		<result property="version" column="version" />
+		<result property="status" column="status" />
+	</resultMap>
+	
+</mapper>
